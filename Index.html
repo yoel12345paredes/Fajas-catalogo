@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Fajaskat_SB</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      background: linear-gradient(180deg, #f0f4f8, #d9e2ec);
+      text-align: center;
+    }
+    header h1 {
+      background: url('imagenes/logo.jpg') no-repeat center center;
+      background-size: contain;
+      height: 120px;
+      line-height: 120px;
+      color: #333;
+      font-size: 2.5rem;
+      font-weight: bold;
+      text-shadow: 1px 1px 2px #fff;
+      margin-bottom: 30px;
+      position: relative;
+    }
+    header h1::after {
+      content: "Fajaskat_SB";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 120px;
+      line-height: 120px;
+      color: #333;
+      font-weight: bold;
+      font-size: 2.5rem;
+      text-shadow: 1px 1px 2px #fff;
+      background: transparent;
+    }
+
+    nav {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 30px;
+      gap: 15px;
+    }
+    nav button {
+      background-color: #007bff;
+      color: white;
+      border: none;
+      padding: 14px 30px;
+      border-radius: 5px;
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      width: 220px;
+      box-shadow: none;
+    }
+    nav button:hover {
+      background-color: #0056b3;
+    }
+
+    section {
+      display: none;
+      max-width: 650px;
+      margin: 0 auto;
+      text-align: left;
+    }
+    section.active {
+      display: block;
+      text-align: center;
+    }
+
+    /* Catálogo vertical */
+    #catalogo div {
+      border-bottom: 1px solid #eee;
+      padding: 15px 0;
+      display: flex;
+      flex-direction: column; /* vertical */
+      align-items: center;
+      gap: 10px;
+      text-align: center;
+    }
+    #catalogo img {
+      width: 150px;
+      height: auto;
+      border-radius: 8px;
+      object-fit: cover;
+    }
+    #catalogo .info {
+      width: 100%;
+    }
+    #catalogo h3 {
+      margin: 8px 0 6px 0;
+      color: #222;
+    }
+    #catalogo p {
+      margin: 4px 0;
+      color: #444;
+    }
+
+    /* Pedido */
+    #pedido select {
+      width: 100%;
+      padding: 10px;
+      font-size: 1.1rem;
+      margin-bottom: 20px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+    #pedido button {
+      width: 100%;
+      padding: 12px;
+      font-size: 1.1rem;
+      background-color: #28a745;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    #pedido button:hover {
+      background-color: #1e7e34;
+    }
+
+    /* Texto Inicio */
+    #inicio h2 {
+      color: #222;
+    }
+    #inicio p {
+      color: #555;
+      font-size: 1.1rem;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Fajaskat_SB</h1>
+  </header>
+
+  <nav>
+    <button id="btnInicio">Inicio</button>
+    <button id="btnVerFajas">Ver fajas</button>
+    <button id="btnRealizarPedido">Realizar pedido</button>
+  </nav>
+
+  <section id="inicio" class="active">
+    <h2>Bienvenido a Fajaskat_SB</h2>
+    <p>Tu catálogo de fajas de confianza.</p>
+  </section>
+
+  <section id="catalogo">
+    <h2>Catálogo de Fajas</h2>
+    <div id="listaFajas"></div>
+  </section>
+
+  <section id="pedido">
+    <h2>Realizar Pedido</h2>
+    <p>Selecciona una faja para realizar el pedido:</p>
+    <select id="fajaSelect"></select>
+    <button id="btnEnviarPedido">Enviar pedido</button>
+  </section>
+
+  <script>
+    const fajas = [
+      {
+        nombre: "Faja Levanta cola",
+        precio: "245 Q",
+        descripcion: "Ideal para moldear tu figura.",
+        imagen: "imagenes/faja1.jpeg",
+        estado: "Disponible"
+      },
+      {
+        nombre: "Faja efecto reloj de arena 1",
+        precio: "245 Q",
+        descripcion: "Perfecta para el gimnasio.",
+        imagen: "imagenes/faja2.jpeg",
+        estado: "Disponible"
+      },
+      {
+        nombre: "Faja Levanta cola sin broches",
+        precio: "245 Q",
+        descripcion: "Apoyo y comodidad.",
+        imagen: "imagenes/faja3.jpeg",
+        estado: "Disponible"
+      },
+      {
+        nombre: "Faja efecto reloj de arena 2",
+        precio: "245 Q",
+        descripcion: "Se ajusta cómodamente bajo la ropa.",
+        imagen: "imagenes/faja4.jpeg",
+        estado: "Disponible"
+      }
+    ];
+
+    const inicioSection = document.getElementById("inicio");
+    const catalogoSection = document.getElementById("catalogo");
+    const pedidoSection = document.getElementById("pedido");
+    const listaFajasDiv = document.getElementById("listaFajas");
+    const fajaSelect = document.getElementById("fajaSelect");
+    const btnEnviarPedido = document.getElementById("btnEnviarPedido");
+
+    // Mostrar sección activa
+    function mostrarSeccion(seccion) {
+      inicioSection.classList.remove("active");
+      catalogoSection.classList.remove("active");
+      pedidoSection.classList.remove("active");
+      seccion.classList.add("active");
+    }
+
+    // Botones navegación
+    document.getElementById("btnInicio").addEventListener("click", () => {
+      mostrarSeccion(inicioSection);
+    });
+
+    document.getElementById("btnVerFajas").addEventListener("click", () => {
+      mostrarSeccion(catalogoSection);
+      cargarCatalogo();
+    });
+
+    document.getElementById("btnRealizarPedido").addEventListener("click", () => {
+      mostrarSeccion(pedidoSection);
+      cargarOpcionesPedido();
+    });
+
+    // Cargar catálogo con nombre, imagen vertical, precio, descripción y estado
+    function cargarCatalogo() {
+      listaFajasDiv.innerHTML = "";
+      fajas.forEach(faja => {
+        const div = document.createElement("div");
+        div.innerHTML = `
+          <img src="${faja.imagen}" alt="${faja.nombre}" />
+          <div class="info">
+            <h3>${faja.nombre}</h3>
+            <p><strong>Precio:</strong> ${faja.precio}</p>
+            <p><strong>Descripción:</strong> ${faja.descripcion}</p>
+            <p><strong>Estado:</strong> <span style="color:${faja.estado === 'Disponible' ? 'green' : 'red'};">${faja.estado}</span></p>
+          </div>
+        `;
+        listaFajasDiv.appendChild(div);
+      });
+    }
+
+    // Cargar opciones para el select en pedido solo con fajas disponibles
+    function cargarOpcionesPedido() {
+      fajaSelect.innerHTML = "";
+      fajas.forEach((faja, index) => {
+        if(faja.estado === "Disponible"){
+          const option = document.createElement("option");
+          option.value = index;
+          option.textContent = faja.nombre;
+          fajaSelect.appendChild(option);
+        }
+      });
+    }
+
+    // Botón enviar pedido a WhatsApp
+    btnEnviarPedido.addEventListener("click", () => {
+      if (fajaSelect.value === "") {
+        alert("Por favor selecciona una faja para realizar el pedido.");
+        return;
+      }
+      const seleccion = fajas[fajaSelect.value];
+      const numeroWhatsApp = "50247588960"; // Cambia aquí por tu número real con código país (ejemplo Guatemala: 502)
+      const mensaje = `Hola, quiero comprar la faja: ${seleccion.nombre}, precio: ${seleccion.precio}.`;
+      window.open(`https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(mensaje)}`, "_blank");
+    });
+  </script>
+</body>
+</html>
+
